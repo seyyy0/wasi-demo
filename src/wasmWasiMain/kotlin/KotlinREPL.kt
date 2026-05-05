@@ -4,12 +4,11 @@ import kotlin.wasm.unsafe.withScopedMemoryAllocator
 
 fun main() {
     println("Hello from Kotlin via WASI. REPL program is being initialized.")
-    println("Instructions:" +
+    println("Instructions:\n" +
             "  - Type 'quit' to exit\n")
     while (true) {
         val input = wasiReadLine()
         if (input == "quit") {
-            println("Wasi recieved: [$input]")
             println("Goodbye!")
             break
         }
