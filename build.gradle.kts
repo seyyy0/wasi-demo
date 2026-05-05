@@ -488,3 +488,21 @@ tasks.withType<NodeJsExec>().all {
         )
     }
 }
+
+tasks.register<Exec>("runWasmtime") {
+    dependsOn("compileProductionExecutableKotlinWasmWasiOptimize")
+
+    val wasmtimeDirectory = unzipWasmtime.get().destinationDir.resolve(wasmtimeArtifactName)
+    executable = wasmtimeDirectory.resolve("wasmtime").absolutePath
+
+    args(
+        "-W", "function-references,gc,exceptions",
+        "kotlin-wasm-wasi-example.wasm"
+    )
+
+    doFirst {
+        workingDir("build/compileSync/wasmWasi/main/productionExecutable/optimized/")
+    }
+
+    standardInput = System.`in`
+}
