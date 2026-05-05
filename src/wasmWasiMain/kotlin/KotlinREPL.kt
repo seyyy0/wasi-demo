@@ -4,7 +4,27 @@ import kotlin.wasm.unsafe.withScopedMemoryAllocator
 
 fun main() {
     println("Hello from Kotlin via WASI. REPL program is being initialized.")
+    wasiReadLine()
 }
 
 @WasmImport("wasi_snapshot_preview1", "fd_read")
 private external fun wasiRawFdRead(fd: Int, iovs_ptr: Int, iovs_len: Int, nread_ptr: Int): Int
+
+@OptIn(UnsafeWasmMemoryApi::class)
+fun wasiReadLine(): String = withScopedMemoryAllocator { allocator ->
+    val buff = allocator.allocate(256)
+    val iovec = allocator.allocate(8)
+    Pointer(iovec.address).storeInt(buff.address.toInt())
+    Pointer(iovec.address + 4u).storeInt(256)
+
+    val nread = allocator.allocate(4)
+    val ret = wasiRawFdRead(
+        fd = 0,
+        iovs_ptr = iovec.address.toInt(),
+        iovs_len = 1,
+        nread_ptr = nread.address.toInt()
+    )
+    check(ret == 0) {"fd_read failed with code $ret"}
+    "todo"
+}
+
