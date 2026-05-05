@@ -5,7 +5,7 @@ Demo project, scaffolded using the official template at [wasm-wasi-template](htt
 Uses Kotlin/Wasm, along with WASI, to run a simple "REPL" program in **non-browser** runtimes (specifically [Wasmtime](https://wasmtime.dev/))
 
 ## Running the program
-To run the program, simply use the gradle task with:
+To run the program, build it first, then simply use the gradle task with:
 ```
 ./gradlew runWasmtime
 ```
