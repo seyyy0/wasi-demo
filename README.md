@@ -9,7 +9,8 @@ To run the program, build it first, then simply use the gradle task with:
 ```
 ./gradlew runWasmtime
 ```
-Or run it from the IntelliJ IDEA Gradle interface (Tasks/other/runWasmtime)
+Or run it from the IntelliJ IDEA Gradle interface (Tasks/other/runWasmtime)  
+This gradle task compiles the Kotlin code to an optimized .wasm binary, which can be found at `build/compileSync/wasmWasi/main/productionExecutable/kotlin`
 
 ## Details
 The project requires I/O in non-browser environments, we need to look at the WASI specs, since standard Kotlin I/O won't suffice.
