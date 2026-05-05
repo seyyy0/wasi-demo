@@ -4,7 +4,10 @@ import kotlin.wasm.unsafe.withScopedMemoryAllocator
 
 fun main() {
     println("Hello from Kotlin via WASI. REPL program is being initialized.")
-    wasiReadLine()
+    val input = wasiReadLine()
+    repeat(5) {
+        println(input)
+    }
 }
 
 @WasmImport("wasi_snapshot_preview1", "fd_read")
@@ -25,6 +28,11 @@ fun wasiReadLine(): String = withScopedMemoryAllocator { allocator ->
         nread_ptr = nread.address.toInt()
     )
     check(ret == 0) {"fd_read failed with code $ret"}
-    "todo"
+    val bytesRead = Pointer(nread.address).loadInt()
+    buildString {
+        for (i in 0 until bytesRead) {
+            append(Pointer(buff.address + i.toUInt()).loadByte().toInt().toChar())
+        }
+    }.trim()
 }
 
